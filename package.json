@@ -1,9 +1,14 @@
 {
-  "name": "QLambda",
+  "name": "qlambda",
   "version": "1.0.0",
   "description": "AWS Serverless apps",
   "main": "index.js",
   "repository": "https://github.com/elitenoire/QLambda.git",
   "author": "Eva Raymond",
-  "license": "MIT"
+  "private": true,
+  "workspaces": {
+    "packages": [
+      "examples/**"
+    ]
+  }
 }
