@@ -1,10 +1,12 @@
-import React, { Component } from "react";
-import logo from "./logo.svg";
+import React, { Component } from 'react'
+import Start from './screens/Start'
+// import { withAuthenticator } from "aws-amplify-react";
 
 class App extends Component {
-  render() {
-    return <div className="App">Hello</div>;
-  }
+	render() {
+		return <Start />
+	}
 }
 
-export default App;
+// export default withAuthenticator(App, { includeGreetings: true });
+export default App
