@@ -9,13 +9,17 @@ const Input = ({
 	name,
 	labelClass,
 	inputClass,
+	error,
 	hasLabel,
 	...props
 }) => {
 	return (
 		<div class="mv-2">
 			{hasLabel && (
-				<label class={`input-label ${labelClass || ''}`} for={name}>
+				<label
+					class={`input-label${error ? ' text-red' : ''} ${labelClass || ''}`}
+					for={name}
+				>
 					{label}
 				</label>
 			)}
@@ -28,6 +32,11 @@ const Input = ({
 				placeholder={placeholder}
 				{...props}
 			/>
+			{error && (
+				<p class="text-red thin italic" style={{ fontSize: '.8em' }}>
+					{error}
+				</p>
+			)}
 		</div>
 	)
 }
