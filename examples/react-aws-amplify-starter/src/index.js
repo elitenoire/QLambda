@@ -7,6 +7,8 @@ import config from './aws-exports'
 import * as serviceWorker from './serviceWorker'
 
 Amplify.configure(config)
+// Log AWS amplify
+window.LOG_LEVEL = 'DEBUG'
 
 ReactDOM.render(<App />, document.getElementById('root'))
 

@@ -1,7 +1,18 @@
 import React, { useState } from 'react'
 import { useMedia } from 'use-media'
+import Lottie from 'react-lottie'
+import animationData from '../lotties/flying-plane.json'
 import AppProfile from '../components/AppProfile'
 import Authentication from '../components/Authentication'
+
+const defaultOptions = {
+	loop: false,
+	autoplay: true,
+	animationData: animationData,
+	rendererSettings: {
+		preserveAspectRatio: 'xMidYMid slice',
+	},
+}
 
 const Start = () => {
 	const isSmallScreen = useMedia({ maxWidth: '991px' })
@@ -12,6 +23,15 @@ const Start = () => {
 	const isPortrait = isSmallScreen || isBigScreenPortrait
 
 	const [showAuth, setShowAuth] = useState(false)
+	const [playLottie, setPlayLottie] = useState(true)
+
+	// On end lottie animation
+	const eventListeners = [
+		{
+			eventName: 'complete',
+			callback: _ => setPlayLottie(false),
+		},
+	]
 
 	return (
 		<div class="section p-0">
@@ -26,7 +46,18 @@ const Start = () => {
 				)}
 				{(showAuth || !isPortrait) && (
 					<div class={`col xs-12${isPortrait ? '' : ' lg-7 xl-6'}`}>
-						<Authentication isPortrait={isPortrait} />
+						{playLottie && isPortrait && (
+							<Lottie
+								options={defaultOptions}
+								isClickToPauseDisabled={true}
+								eventListeners={eventListeners}
+								width="100vw"
+								height="100vh"
+							/>
+						)}
+						{(!playLottie || !isPortrait) && (
+							<Authentication isPortrait={isPortrait} />
+						)}
 					</div>
 				)}
 			</div>

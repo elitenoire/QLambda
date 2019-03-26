@@ -11,15 +11,15 @@ const useForm = (initialValues, callback, validate) => {
 		_ => {
 			if (Object.keys(errors).length === 0 && isSubmitting) {
 				callback()
-			}
+			} else setIsSubmitting(false)
 		},
 		[errors]
 	)
 	// Input validation and submit form
 	const handleSubmit = e => {
 		if (e) e.preventDefault()
-		setIsSubmitting(true)
 		setErrors(validate(values))
+		setIsSubmitting(true)
 	}
 	// Input Change
 	const handleChange = e => {
@@ -27,7 +27,7 @@ const useForm = (initialValues, callback, validate) => {
 		const { name, value } = e.target
 		setValues(values => ({
 			...values,
-			[name]: value,
+			[name]: value.trim(),
 		}))
 		// Clear error if any
 		if (errors[name]) {
@@ -47,6 +47,7 @@ const useForm = (initialValues, callback, validate) => {
 		errors,
 		resetForm,
 		isSubmitting,
+		setIsSubmitting,
 	}
 }
 

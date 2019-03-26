@@ -24,7 +24,7 @@ export const ButtonBase = styled.button`
 		`}
 	:hover,
     :active {
-		transform: scale(0.9);
+		transform: ${props => (props.disabled ? 'none' : 'scale(0.9)')};
 		animation: none;
 	}
 `
@@ -35,6 +35,7 @@ export const InputBase = styled.input`
 		border-radius: 10px;
 		border: 1px solid #efefef;
 		background: #f2f2f2;
+		transition: border 0.5s ease-out;
 		::placeholder {
 			color: #5a5a5b;
 		}
