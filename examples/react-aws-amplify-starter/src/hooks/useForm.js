@@ -6,20 +6,25 @@ const useForm = (initialValues, callback, validate) => {
 	const [errors, setErrors] = useState({})
 	const [isSubmitting, setIsSubmitting] = useState(false)
 
+	const handleCallback = async _ => {
+		if (Object.keys(errors).length === 0 && isSubmitting) {
+			await callback()
+		}
+		setIsSubmitting(false)
+	}
+
 	// Form submission via callback
 	useEffect(
 		_ => {
-			if (Object.keys(errors).length === 0 && isSubmitting) {
-				callback()
-			} else setIsSubmitting(false)
+			handleCallback()
 		},
 		[errors]
 	)
 	// Input validation and submit form
 	const handleSubmit = e => {
 		if (e) e.preventDefault()
-		setErrors(validate(values))
 		setIsSubmitting(true)
+		setErrors(validate(values))
 	}
 	// Input Change
 	const handleChange = e => {

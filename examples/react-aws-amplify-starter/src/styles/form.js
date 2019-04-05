@@ -24,8 +24,15 @@ export const ButtonBase = styled.button`
 		`}
 	:hover,
     :active {
-		transform: ${props => (props.disabled ? 'none' : 'scale(0.9)')};
-		animation: none;
+		${({ pulse, disabled }) => css`
+			box-shadow: ${!disabled
+				? pulse
+					? 'none'
+					: '5px 5px 8px 0 rgba(0, 0, 0, 0.1)'
+				: '5px 20px 30px 0 rgba(0, 0, 0, 0.1)'};
+			transform: ${disabled ? 'none' : 'scale(0.9)'};
+			animation: none;
+		`}
 	}
 `
 

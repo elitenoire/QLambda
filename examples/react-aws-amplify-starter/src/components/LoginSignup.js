@@ -1,9 +1,10 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { useTransition, animated, config } from 'react-spring'
 import Icon from 'react-eva-icons'
 import { Input, Button } from '../form'
-import { Layer, AuthenticationStyles as Sheet } from '../styles'
-import useForm from '../hooks/useForm'
+import Alert from './Alert'
+import { Layer, LoginSignupStyles as Sheet } from '../styles'
+import { useForm, useAuth } from '../hooks'
 import validate from '../utils/validate'
 import logo from '../assets/logo.png'
 
@@ -11,17 +12,27 @@ import logo from '../assets/logo.png'
 const loginInitialValues = { email: '', password: '' }
 const signupInitialValues = { ...loginInitialValues, confirmPassword: '' }
 
-const Authentication = ({ isPortrait }) => {
+const LoginSignup = ({ isPortrait }) => {
+	// Authentication
+	const { signIn, signUp, error, authState, dispatch } = useAuth()
 	// Variable to toggle between signup and login
-	const [signup, setSignup] = useState(false)
-	// Signup Method
-	const submitSignup = e => console.log('No errors, submit callback called', e)
-	// Login Method
-	const submitLogin = e => console.log('No errors, login callback called', e)
+	const showSignUp = authState === 'signUp'
+	// SignIn Method
+	const submitSignIn = async e =>
+		await signIn(values.email.toLowerCase(), values.password)
+	// SignUp Method
+	const submitSignUp = async e =>
+		await signUp({
+			username: values.email.toLowerCase(),
+			password: values.password,
+			attributes: {
+				email: values.email.toLowerCase(),
+			},
+		})
 	// Form Controller
 	const FormController = {
-		signup: useForm(signupInitialValues, submitSignup, validate),
-		login: useForm(loginInitialValues, submitLogin, validate),
+		signup: useForm(signupInitialValues, submitSignUp, validate),
+		login: useForm(loginInitialValues, submitSignIn, validate),
 	}
 	// Current form attributes
 	const {
@@ -31,20 +42,29 @@ const Authentication = ({ isPortrait }) => {
 		handleChange,
 		handleSubmit,
 		isSubmitting,
-		setIsSubmitting,
-	} = signup ? FormController.signup : FormController.login
-	// Switch form
+	} = showSignUp ? FormController.signup : FormController.login
+	// Swap between SignIn and SignUp form
 	const swapForm = _ => {
 		resetForm()
-		setSignup(!signup)
+		dispatch({ type: !showSignUp ? 'SIGNUP' : 'SIGNIN', error: null })
 	}
 	// Switch form animation
-	const [fade] = useTransition(signup, null, {
-		from: { opacity: 0 },
-		enter: { opacity: 1 },
-		leave: { opacity: 1 },
+	const [fade] = useTransition(showSignUp, null, {
+		from: {
+			opacity: 0,
+		},
+		enter: {
+			opacity: 1,
+		},
+		leave: {
+			opacity: 1,
+		},
 		config: config.wobbly,
 	})
+	// Only render this component for Signup / Signin
+	if (!showSignUp && authState !== 'signIn') {
+		return null
+	}
 
 	return (
 		<Sheet isPortrait={isPortrait}>
@@ -54,14 +74,15 @@ const Authentication = ({ isPortrait }) => {
 						<img class="img-responsive" src={logo} alt="Logo" />
 					</a>
 				</div>
-
 				<animated.div style={fade.props}>
 					<h4>Hello!</h4>
 					<p class="subline">
-						{signup ? "Let's create your account" : 'Sign in to your account'}
+						{showSignUp
+							? "Let's create your account"
+							: 'Sign in to your account'}
 					</p>
 					<form
-						id={`form-${signup ? 'signup' : 'login'}`}
+						id={`form-${showSignUp ? 'signup' : 'login'}`}
 						class="form-control"
 						onSubmit={handleSubmit}
 						noValidate
@@ -89,7 +110,7 @@ const Authentication = ({ isPortrait }) => {
 								error={errors.password}
 								hasLabel
 							/>
-							{signup && (
+							{showSignUp && (
 								<Input
 									label="Confirm Password"
 									name="confirmPassword"
@@ -122,12 +143,16 @@ const Authentication = ({ isPortrait }) => {
 										/>
 									</span>
 								)}
-								{!isSubmitting ? (signup ? 'Create Account' : 'Sign In') : ''}
+								{!isSubmitting
+									? showSignUp
+										? 'Create Account'
+										: 'Sign In'
+									: ''}
 							</Button>
 						</div>
 					</form>
 					<p class="display-flex justify-content-center">
-						{signup ? (
+						{showSignUp ? (
 							<>
 								Already have an account?
 								<span class="text-link" onClick={swapForm}>
@@ -145,8 +170,13 @@ const Authentication = ({ isPortrait }) => {
 					</p>
 				</animated.div>
 			</Layer>
+			<Alert
+				color={isPortrait ? 'bg-black filled' : 'orange'}
+				onClose={() => dispatch({ error: null })}
+				text={error}
+			/>
 		</Sheet>
 	)
 }
 
-export default Authentication
+export default LoginSignup

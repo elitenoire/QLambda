@@ -3,7 +3,7 @@ import { useMedia } from 'use-media'
 import Lottie from 'react-lottie'
 import animationData from '../lotties/flying-plane.json'
 import AppProfile from '../components/AppProfile'
-import Authentication from '../components/Authentication'
+import LoginSignup from '../components/LoginSignup'
 
 const defaultOptions = {
 	loop: false,
@@ -56,7 +56,7 @@ const Start = () => {
 							/>
 						)}
 						{(!playLottie || !isPortrait) && (
-							<Authentication isPortrait={isPortrait} />
+							<LoginSignup isPortrait={isPortrait} />
 						)}
 					</div>
 				)}
