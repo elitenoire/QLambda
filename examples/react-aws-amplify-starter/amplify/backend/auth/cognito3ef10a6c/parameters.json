@@ -11,24 +11,22 @@
     "autoVerifiedAttributes": [
         "email"
     ],
-    "mfaConfiguration": "OFF",
+    "mfaConfiguration": "OPTIONAL",
     "mfaTypes": [
-        "SMS Text Message"
+        "SMS Text Message",
+        "TOTP"
     ],
     "roleName": "cognito3ef10a6c_sns-role",
     "roleExternalId": "cognito3ef10a6c_role_external_id",
     "policyName": "cognito3ef10a6c-sns-policy",
     "smsAuthenticationMessage": "Your authentication code is {####}",
     "smsVerificationMessage": "Your verification code is {####}",
-    "emailVerificationSubject": "Your verification code",
-    "emailVerificationMessage": "Your verification code is {####}",
-    "defaultPasswordPolicy": false,
-    "passwordPolicyMinLength": 8,
+    "emailVerificationSubject": "QLambda Verification Code",
+    "emailVerificationMessage": "Please verify your QLambda account with this code: {####}",
+    "defaultPasswordPolicy": true,
+    "passwordPolicyMinLength": "6",
     "passwordPolicyCharacters": [
-        "Requires Lowercase",
-        "Requires Uppercase",
-        "Requires Numbers",
-        "Requires Symbols"
+        "Requires Lowercase"
     ],
     "requiredAttributes": [
         "email"
@@ -37,7 +35,11 @@
     "userpoolClientGenerateSecret": true,
     "userpoolClientRefreshTokenValidity": 30,
     "userpoolClientReadAttributes": [
-        "email"
+        "birthdate",
+        "email",
+        "family_name",
+        "name",
+        "phone_number"
     ],
     "mfaLambdaRole": "cognito3ef10a6c_totp_lambda_role",
     "mfaLambdaLogPolicy": "cognito3ef10a6c_totp_lambda_log_policy",
@@ -46,8 +48,8 @@
     "userpoolClientLambdaRole": "cognito3ef10a6c_userpoolclient_lambda_role",
     "userpoolClientLogPolicy": "cognito3ef10a6c_userpoolclient_lambda_log_policy",
     "userpoolClientLambdaPolicy": "cognito3ef10a6c_userpoolclient_lambda_iam_policy",
-    "userpoolClientSetAttributes": false,
-    "useDefault": "default",
+    "userpoolClientSetAttributes": true,
+    "useDefault": "manual",
     "resourceName": "cognito3ef10a6c",
     "authSelections": "identityPoolAndUserPool",
     "authRoleName": {
@@ -67,5 +69,12 @@
             "UnauthRole",
             "Arn"
         ]
-    }
+    },
+    "userpoolClientWriteAttributes": [
+        "birthdate",
+        "family_name",
+        "name",
+        "phone_number",
+        "email"
+    ]
 }
