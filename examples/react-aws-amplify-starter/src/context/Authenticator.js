@@ -1,23 +1,28 @@
 import React, { useEffect, useReducer } from 'react'
 import { Auth } from 'aws-amplify'
+import {
+	SIGNIN,
+	SIGNEDIN,
+	SIGNUP,
+	CONFIRM_SIGNUP,
+	FORGOT_PASSWORD,
+	RESET_PASSWORD,
+} from '../utils/constants'
 
-const initialState = { user: {}, authState: null, error: null }
+const initialState = { user: {}, authState: null, error: null, msg: null }
 export const AuthContext = React.createContext(initialState)
 
-const authReducer = (state, { type, user, error }) => {
+const authReducer = (state, { type, user = {}, error = null, msg = null }) => {
 	switch (type) {
-		case 'SIGNEDIN':
-			return { ...state, user, authState: 'signedIn', error: null }
-		case 'SIGNIN':
-			return { ...state, user: {}, authState: 'signIn', error }
-		case 'SIGNUP':
-			return { ...state, user: {}, authState: 'signUp', error }
-		case 'CONFIRM_SIGNUP':
-			return { ...state, user, authState: 'confirmSignUp', error }
-		case 'RESEND_SIGNUP':
-			return { ...state, user, authState: 'resendSignUp', error }
+		case SIGNEDIN:
+		case SIGNIN:
+		case SIGNUP:
+		case CONFIRM_SIGNUP:
+		case FORGOT_PASSWORD:
+		case RESET_PASSWORD:
+			return { user, authState: type, error, msg }
 		default:
-			return { ...state, error: error || null }
+			return { ...state, error, msg }
 	}
 }
 
@@ -31,11 +36,11 @@ const Authenticator = ({ children }) => {
 		try {
 			const user = await Auth.currentAuthenticatedUser()
 			// User is signed in
-			dispatch({ type: 'SIGNEDIN', user })
+			dispatch({ type: SIGNEDIN, user })
 		} catch (err) {
 			console.log({ err })
 			// User needs to sign in
-			dispatch({ type: 'SIGNIN', error: null })
+			dispatch({ type: SIGNIN, error: null })
 		}
 	}
 	// Perform auth check

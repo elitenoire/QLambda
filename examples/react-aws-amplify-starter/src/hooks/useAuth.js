@@ -1,6 +1,14 @@
 import { useContext } from 'react'
 import { Auth } from 'aws-amplify'
-import { AuthContext } from '../context/Authenticator'
+import { AuthContext } from '../context'
+import {
+	SIGNIN,
+	SIGNEDIN,
+	SIGNUP,
+	CONFIRM_SIGNUP,
+	FORGOT_PASSWORD,
+	RESET_PASSWORD,
+} from '../utils/constants'
 
 export default _ => {
 	const {
@@ -12,15 +20,12 @@ export default _ => {
 	const signIn = async (username, password) => {
 		try {
 			const user = await Auth.signIn(username, password)
-			console.log({ user })
-			dispatch({ type: 'SIGNEDIN', user })
+			//console.log({ user })
+			dispatch({ type: SIGNEDIN, user })
 		} catch (err) {
 			if (err.code === 'UserNotConfirmedException') {
 				// Resend code and confirm user
-				const isSent = await resendSignUp(username)
-				if (isSent) {
-					dispatch({ type: 'CONFIRM_SIGNUP', user: { username }, error: null })
-				}
+				await resendSignUp(username, false)
 			} else if (err.code === 'NotAuthorizedException') {
 				// TODO: Display incorrect password error
 				dispatch({ error: 'Password is incorrect' })
@@ -42,10 +47,10 @@ export default _ => {
 				attributes,
 			})
 			console.log({ user, userConfirmed, userSub })
-			dispatch({ type: 'CONFIRM_SIGNUP', user })
+			dispatch({ type: CONFIRM_SIGNUP, user })
 		} catch (err) {
 			console.log({ err })
-			dispatch({ error: err.message })
+			dispatch({ type: SIGNUP, error: err.message })
 		}
 	}
 	// Confirm User Sign Up
@@ -53,23 +58,28 @@ export default _ => {
 		try {
 			const data = await Auth.confirmSignUp(username, code)
 			// TODO: or use checkUser instead
-			console.log({ data })
-			dispatch({ type: 'SIGNIN', error: null })
+			console.log({ data }) // { data: 'SUCCESS'}
+			dispatch({ type: SIGNIN, msg: 'Success! Please sign in' })
 		} catch (err) {
 			console.log({ err })
 			dispatch({ error: err.message })
 		}
 	}
 	// Resend User Sign Up code
-	const resendSignUp = async username => {
+	const resendSignUp = async (username, withAlert = true) => {
 		try {
 			const data = await Auth.resendSignUp(username)
 			console.log({ data })
-			return true
+			dispatch({
+				type: CONFIRM_SIGNUP,
+				user: { username },
+				msg: withAlert ? 'Code sent!' : null,
+			})
+			// return true
 		} catch (err) {
 			console.log({ err })
 			dispatch({
-				type: 'CONFIRM_SIGNUP',
+				type: CONFIRM_SIGNUP,
 				user: { username },
 				error: err.message,
 			})
@@ -80,7 +90,7 @@ export default _ => {
 		try {
 			const data = await Auth.signOut()
 			console.log({ data })
-			dispatch({ type: 'SIGNIN', error: null })
+			dispatch({ type: SIGNIN })
 		} catch (err) {
 			console.log({ err })
 			dispatch({ error: err.message })
@@ -91,7 +101,7 @@ export default _ => {
 		user,
 		authState,
 		error,
-		isAuth: authState === 'signedIn',
+		isAuth: authState === SIGNEDIN,
 		dispatch,
 		signIn,
 		signUp,

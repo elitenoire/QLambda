@@ -2,7 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import Amplify from 'aws-amplify'
 import 'boba/dist/boba-extended.min.css'
-import Authenticator from './context/Authenticator'
+import { Authenticator, DisplayMode } from './context'
 import App from './App'
 import config from './aws-exports'
 import * as serviceWorker from './serviceWorker'
@@ -12,9 +12,11 @@ Amplify.configure(config)
 window.LOG_LEVEL = 'DEBUG'
 
 ReactDOM.render(
-	<Authenticator>
-		<App />
-	</Authenticator>,
+	<DisplayMode>
+		<Authenticator>
+			<App />
+		</Authenticator>
+	</DisplayMode>,
 	document.getElementById('root')
 )
 
