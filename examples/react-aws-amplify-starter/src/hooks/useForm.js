@@ -1,22 +1,27 @@
 // https://upmostly.com/tutorials/form-validation-using-custom-react-hooks/
 import { useState, useEffect } from 'react'
+import validate from '../utils/validate'
 
-const useForm = (initialValues, callback, validate) => {
+const useForm = (initialValues, callback, isValidate = true) => {
 	const [values, setValues] = useState(initialValues)
 	const [errors, setErrors] = useState({})
 	const [isSubmitting, setIsSubmitting] = useState(false)
 
 	const handleCallback = async _ => {
 		if (Object.keys(errors).length === 0 && isSubmitting) {
-			await callback()
+			return callback()
 		}
-		setIsSubmitting(false)
 	}
-
 	// Form submission via callback
 	useEffect(
 		_ => {
-			handleCallback()
+			let isSubscribed = true
+			handleCallback().then(_ => {
+				if (isSubscribed && isSubmitting) {
+					setIsSubmitting(false)
+				}
+			})
+			return () => (isSubscribed = false)
 		},
 		[errors]
 	)
@@ -24,7 +29,9 @@ const useForm = (initialValues, callback, validate) => {
 	const handleSubmit = e => {
 		if (e) e.preventDefault()
 		setIsSubmitting(true)
-		setErrors(validate(values))
+		if (isValidate) {
+			setErrors(validate(values))
+		}
 	}
 	// Input Change
 	const handleChange = e => {
