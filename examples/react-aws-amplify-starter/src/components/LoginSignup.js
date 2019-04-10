@@ -117,9 +117,9 @@ const LoginSignup = ({ isPortrait }) => {
 									placeholder="confirm password"
 									type="password"
 									labelClass="bold"
-									value={values.confirmPassword}
+									value={values.confirmPassword || ''}
 									onChange={handleChange}
-									error={errors.confirmPassword}
+									error={errors.confirmPassword || ''}
 									hasLabel
 								/>
 							)}
