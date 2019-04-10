@@ -1,22 +1,23 @@
 import React from 'react'
 import { useTransition, animated, config } from 'react-spring'
-import Icon from 'react-eva-icons'
+import { LoaderAlt } from 'styled-icons/boxicons-regular/LoaderAlt'
 import { Input, Button } from '../form'
 import Alert from './Alert'
 import { Layer, LoginSignupStyles as Sheet } from '../styles'
 import { useForm, useAuth } from '../hooks'
-import validate from '../utils/validate'
+import { SIGNUP, SIGNIN } from '../utils/constants'
+
 import logo from '../assets/logo.png'
 
 // Initial form values
-const loginInitialValues = { email: '', password: '' }
-const signupInitialValues = { ...loginInitialValues, confirmPassword: '' }
+const signinInitialValues = { email: '', password: '' }
+const signupInitialValues = { ...signinInitialValues, confirmPassword: '' }
 
 const LoginSignup = ({ isPortrait }) => {
 	// Authentication
-	const { signIn, signUp, error, authState, dispatch } = useAuth()
+	const { signIn, signUp, error, msg, authState, dispatch } = useAuth()
 	// Variable to toggle between signup and login
-	const showSignUp = authState === 'signUp'
+	const showSignUp = authState === SIGNUP
 	// SignIn Method
 	const submitSignIn = async e =>
 		await signIn(values.email.toLowerCase(), values.password)
@@ -29,12 +30,10 @@ const LoginSignup = ({ isPortrait }) => {
 				email: values.email.toLowerCase(),
 			},
 		})
-	// Form Controller
-	const FormController = {
-		signup: useForm(signupInitialValues, submitSignUp, validate),
-		login: useForm(loginInitialValues, submitSignIn, validate),
-	}
-	// Current form attributes
+	// Form Control
+	const formParams = showSignUp
+		? [signupInitialValues, submitSignUp]
+		: [signinInitialValues, submitSignIn]
 	const {
 		values,
 		errors,
@@ -42,11 +41,11 @@ const LoginSignup = ({ isPortrait }) => {
 		handleChange,
 		handleSubmit,
 		isSubmitting,
-	} = showSignUp ? FormController.signup : FormController.login
+	} = useForm(...formParams)
 	// Swap between SignIn and SignUp form
 	const swapForm = _ => {
 		resetForm()
-		dispatch({ type: !showSignUp ? 'SIGNUP' : 'SIGNIN', error: null })
+		dispatch({ type: showSignUp ? SIGNIN : SIGNUP })
 	}
 	// Switch form animation
 	const [fade] = useTransition(showSignUp, null, {
@@ -62,7 +61,8 @@ const LoginSignup = ({ isPortrait }) => {
 		config: config.wobbly,
 	})
 	// Only render this component for Signup / Signin
-	if (!showSignUp && authState !== 'signIn') {
+	if (!showSignUp && authState !== SIGNIN) {
+		// TODO: show an error component
 		return null
 	}
 
@@ -132,15 +132,7 @@ const LoginSignup = ({ isPortrait }) => {
 							>
 								{isSubmitting && (
 									<span class="display-flex">
-										<Icon
-											name="loader-outline"
-											size="medium"
-											animation={{
-												type: 'pulse',
-												infinite: true,
-												hover: false,
-											}}
-										/>
+										<LoaderAlt size={20} />
 									</span>
 								)}
 								{!isSubmitting
@@ -171,9 +163,17 @@ const LoginSignup = ({ isPortrait }) => {
 				</animated.div>
 			</Layer>
 			<Alert
-				color={isPortrait ? 'bg-black filled' : 'orange'}
-				onClose={() => dispatch({ error: null })}
-				text={error}
+				color={
+					isPortrait
+						? msg
+							? 'green-filled'
+							: 'bg-black filled'
+						: msg
+						? 'green'
+						: 'orange'
+				}
+				onClose={() => dispatch({ error: null, msg: null })}
+				text={error || msg}
 			/>
 		</Sheet>
 	)

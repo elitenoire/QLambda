@@ -1,3 +1,4 @@
+// useForm hook based on:
 // https://upmostly.com/tutorials/form-validation-using-custom-react-hooks/
 import { useState, useEffect } from 'react'
 import validate from '../utils/validate'
@@ -12,6 +13,15 @@ const useForm = (initialValues, callback, isValidate = true) => {
 			return callback()
 		}
 	}
+	// GetDerivedStateFromProps
+	// This is needed to update values with the initialValues prop
+	// as useState(initialValues) is only used for instantiation
+	useEffect(
+		_ => {
+			setValues(initialValues)
+		},
+		[initialValues]
+	)
 	// Form submission via callback
 	useEffect(
 		_ => {
@@ -37,10 +47,13 @@ const useForm = (initialValues, callback, isValidate = true) => {
 	const handleChange = e => {
 		e.persist()
 		const { name, value } = e.target
-		setValues(values => ({
-			...values,
-			[name]: value.trim(),
-		}))
+		// Update state with input
+		if (name in values) {
+			setValues(values => ({
+				...values,
+				[name]: value.trim(),
+			}))
+		}
 		// Clear error if any
 		if (errors[name]) {
 			setErrors({ ...errors, [name]: '' })
