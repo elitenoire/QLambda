@@ -4,6 +4,8 @@ import { Base } from './CommonStyles'
 export default styled(Base)`
 	h4 {
 		font-size: 2.5em;
+		font-weight: 700;
+		color: #9c3207;
 	}
 	.icon-logo {
 		flex-direction: column;
@@ -23,28 +25,16 @@ export default styled(Base)`
 		border-radius: 20px;
 	}
 	.form-action {
-		text-align: center;
-		margin: 2em auto;
-		width: 50%;
+		width: 55%;
 	}
 	.text-link {
-		color: #f9ae37;
 		font-weight: 500;
 		margin: 0 0.5em;
-		:hover {
-			cursor: pointer;
-		}
+		cursor: pointer;
 	}
 	@media (max-width: 991px), (orientation: portrait) {
-		background: antiquewhite;
-		h4 {
-			color: #9c3207;
-		}
 		.card {
 			box-shadow: 5px 20px 30px 0 rgba(0, 0, 0, 0.1);
-		}
-		.form-action {
-			width: 80%;
 		}
 	}
 	@media (min-width: 768px) {
@@ -54,6 +44,9 @@ export default styled(Base)`
 			a {
 				width: 35px;
 			}
+		}
+		.form-action {
+			width: 50%;
 		}
 	}
 `

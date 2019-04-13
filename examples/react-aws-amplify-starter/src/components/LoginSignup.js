@@ -1,11 +1,10 @@
 import React from 'react'
 import { useTransition, animated, config } from 'react-spring'
-import { LoaderAlt } from 'styled-icons/boxicons-regular/LoaderAlt'
 import { Input, Button } from '../form'
 import Alert from './Alert'
 import { Layer, LoginSignupStyles as Sheet } from '../styles'
 import { useForm, useAuth } from '../hooks'
-import { SIGNUP, SIGNIN } from '../utils/constants'
+import { SIGNUP, SIGNIN, FORGOT_PASSWORD } from '../utils/constants'
 
 import logo from '../assets/logo.png'
 
@@ -15,7 +14,7 @@ const signupInitialValues = { ...signinInitialValues, confirmPassword: '' }
 
 const LoginSignup = ({ isPortrait }) => {
 	// Authentication
-	const { signIn, signUp, error, msg, authState, dispatch } = useAuth()
+	const { user, signIn, signUp, error, msg, authState, dispatch } = useAuth()
 	// Variable to toggle between signup and login
 	const showSignUp = authState === SIGNUP
 	// SignIn Method
@@ -30,6 +29,8 @@ const LoginSignup = ({ isPortrait }) => {
 				email: values.email.toLowerCase(),
 			},
 		})
+	// Remember user's username for sign in
+	signinInitialValues.email = user.username || ''
 	// Form Control
 	const formParams = showSignUp
 		? [signupInitialValues, submitSignUp]
@@ -65,9 +66,11 @@ const LoginSignup = ({ isPortrait }) => {
 		// TODO: show an error component
 		return null
 	}
-
 	return (
-		<Sheet isPortrait={isPortrait}>
+		<Sheet
+			isPortrait={isPortrait}
+			className={isPortrait ? 'bg-tint-orange' : ''}
+		>
 			<Layer>
 				<div class="hover-bob shadow-1 shape-circular display-flex justify-content-center align-items-middle icon-logo">
 					<a href="#">
@@ -108,6 +111,7 @@ const LoginSignup = ({ isPortrait }) => {
 								value={values.password}
 								onChange={handleChange}
 								error={errors.password}
+								autoFocus={!!user.username}
 								hasLabel
 							/>
 							{showSignUp && (
@@ -124,37 +128,38 @@ const LoginSignup = ({ isPortrait }) => {
 								/>
 							)}
 						</div>
-						<div class="form-action">
-							<Button
-								className="border-none rounded medium w-100"
-								type="submit"
-								disabled={isSubmitting}
-							>
-								{isSubmitting && (
-									<span class="display-flex">
-										<LoaderAlt size={20} />
-									</span>
-								)}
-								{!isSubmitting
-									? showSignUp
-										? 'Create Account'
-										: 'Sign In'
-									: ''}
-							</Button>
+						<div class="display-flex align-items-middle justify-content-space-around pv-2">
+							{!showSignUp && (
+								<p
+									class=" m-0 hover-grow text-link text-orange"
+									onClick={_ => dispatch({ type: FORGOT_PASSWORD })}
+								>
+									Forgot Password?
+								</p>
+							)}
+							<div class="form-action">
+								<Button
+									className="border-none rounded medium w-100"
+									type="submit"
+									loading={isSubmitting}
+								>
+									{showSignUp ? 'Create Account' : 'Sign In'}
+								</Button>
+							</div>
 						</div>
 					</form>
-					<p class="display-flex justify-content-center">
+					<p class="display-flex justify-content-center mt-2">
 						{showSignUp ? (
 							<>
 								Already have an account?
-								<span class="text-link" onClick={swapForm}>
+								<span class="text-link text-orange" onClick={swapForm}>
 									Sign in
 								</span>
 							</>
 						) : (
 							<>
 								No account yet?
-								<span class="text-link" onClick={swapForm}>
+								<span class="text-link text-orange" onClick={swapForm}>
 									Sign up
 								</span>
 							</>
@@ -166,14 +171,14 @@ const LoginSignup = ({ isPortrait }) => {
 				color={
 					isPortrait
 						? msg
-							? 'green-filled'
+							? 'green filled'
 							: 'bg-black filled'
 						: msg
 						? 'green'
 						: 'orange'
 				}
-				onClose={() => dispatch({ error: null, msg: null })}
 				text={error || msg}
+				dispatch={dispatch}
 			/>
 		</Sheet>
 	)
