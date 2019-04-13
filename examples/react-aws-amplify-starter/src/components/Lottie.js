@@ -17,6 +17,7 @@ const Lottie = ({
 	autoplay,
 	width,
 	height,
+	full,
 }) => {
 	const defaultOptions = {
 		loop: loop || false,
@@ -36,13 +37,15 @@ const Lottie = ({
 	]
 
 	return (
-		<div className="bg-tint-orange shape-circular display-flex">
+		<div
+			className={`${full ? '' : 'bg-tint-orange shape-circular '}display-flex`}
+		>
 			<LottieBase
 				options={defaultOptions}
 				isClickToPauseDisabled={true}
 				eventListeners={eventListeners}
-				width={width || '100%'}
-				height={height || '100%'}
+				width={full ? '100vw' : width || '100%'}
+				height={full ? '100vh' : height || '100%'}
 			/>
 			{extra && (
 				<Mini size={extraSize}>

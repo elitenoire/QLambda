@@ -25,3 +25,6 @@ export const Layer = styled.div`
 		width: 75%;
 	}
 `
+export const Background = styled.div`
+	background: whitesmoke;
+`

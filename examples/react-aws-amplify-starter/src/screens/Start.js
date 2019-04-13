@@ -1,68 +1,65 @@
-import React, { useState } from 'react'
-import { useMedia } from 'use-media'
-import Lottie from 'react-lottie'
-import animationData from '../lotties/flying-plane.json'
+import React, { useState, useContext } from 'react'
+import Lottie from '../components/Lottie'
 import AppProfile from '../components/AppProfile'
 import LoginSignup from '../components/LoginSignup'
-
-const defaultOptions = {
-	loop: false,
-	autoplay: true,
-	animationData: animationData,
-	rendererSettings: {
-		preserveAspectRatio: 'xMidYMid slice',
-	},
-}
+import ConfirmSignup from '../components/ConfirmSignup'
+import ForgotPassword from '../components/ForgotPassword'
+import ResetPassword from '../components/ResetPassword'
+import { DisplayContext, AuthContext } from '../context/'
+import {
+	CONFIRM_SIGNUP,
+	FORGOT_PASSWORD,
+	RESET_PASSWORD,
+} from '../utils/constants'
+import { Background } from '../styles'
+import animationData from '../lotties/splash-plane.json'
 
 const Start = () => {
-	const isSmallScreen = useMedia({ maxWidth: '991px' })
-	const isBigScreenPortrait = useMedia({
-		minWidth: '992px',
-		orientation: 'portrait',
-	})
-	const isPortrait = isSmallScreen || isBigScreenPortrait
+	const { isPortrait } = useContext(DisplayContext)
+	const {
+		state: { authState },
+	} = useContext(AuthContext)
 
 	const [showAuth, setShowAuth] = useState(false)
 	const [playLottie, setPlayLottie] = useState(true)
 
-	// On end lottie animation
-	const eventListeners = [
-		{
-			eventName: 'complete',
-			callback: _ => setPlayLottie(false),
-		},
-	]
-
-	return (
-		<div class="section p-0">
-			<div class="row gapless">
-				{(!showAuth || !isPortrait) && (
-					<div class={`col xs-12${isPortrait ? '' : ' lg-5 xl-6'}`}>
-						<AppProfile
-							isPortrait={isPortrait}
-							setShowAuth={() => setShowAuth(true)}
-						/>
-					</div>
-				)}
-				{(showAuth || !isPortrait) && (
-					<div class={`col xs-12${isPortrait ? '' : ' lg-7 xl-6'}`}>
-						{playLottie && isPortrait && (
-							<Lottie
-								options={defaultOptions}
-								isClickToPauseDisabled={true}
-								eventListeners={eventListeners}
-								width="100vw"
-								height="100vh"
-							/>
+	switch (authState) {
+		case CONFIRM_SIGNUP:
+			return <ConfirmSignup />
+		case FORGOT_PASSWORD:
+			return <ForgotPassword />
+		case RESET_PASSWORD:
+			return <ResetPassword />
+		default:
+			return (
+				<Background class="section p-0">
+					<div class="row gapless">
+						{(!showAuth || !isPortrait) && (
+							<div class={`col xs-12${isPortrait ? '' : ' lg-5 xl-6'}`}>
+								<AppProfile
+									isPortrait={isPortrait}
+									setShowAuth={() => setShowAuth(true)}
+								/>
+							</div>
 						)}
-						{(!playLottie || !isPortrait) && (
-							<LoginSignup isPortrait={isPortrait} />
+						{(showAuth || !isPortrait) && (
+							<div class={`col xs-12${isPortrait ? '' : ' lg-7 xl-6'}`}>
+								{playLottie && isPortrait && (
+									<Lottie
+										animationData={animationData}
+										onEnd={_ => setPlayLottie(false)}
+										full
+									/>
+								)}
+								{(!playLottie || !isPortrait) && (
+									<LoginSignup isPortrait={isPortrait} />
+								)}
+							</div>
 						)}
 					</div>
-				)}
-			</div>
-		</div>
-	)
+				</Background>
+			)
+	}
 }
 
 export default Start

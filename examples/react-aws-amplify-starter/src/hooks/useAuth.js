@@ -6,13 +6,12 @@ import {
 	SIGNEDIN,
 	SIGNUP,
 	CONFIRM_SIGNUP,
-	FORGOT_PASSWORD,
 	RESET_PASSWORD,
 } from '../utils/constants'
 
 export default _ => {
 	const {
-		state: { user, authState, error },
+		state: { user, authState, error, msg },
 		dispatch,
 	} = useContext(AuthContext)
 
@@ -20,21 +19,21 @@ export default _ => {
 	const signIn = async (username, password) => {
 		try {
 			const user = await Auth.signIn(username, password)
-			//console.log({ user })
+			console.log({ user })
 			dispatch({ type: SIGNEDIN, user })
 		} catch (err) {
 			if (err.code === 'UserNotConfirmedException') {
 				// Resend code and confirm user
 				await resendSignUp(username, false)
 			} else if (err.code === 'NotAuthorizedException') {
-				// TODO: Display incorrect password error
-				dispatch({ error: 'Password is incorrect' })
+				// Display incorrect password error
+				dispatch({ error: 'Username or password is incorrect' })
 			} else if (err.code === 'UserNotFoundException') {
-				// TODO: Display username/email doesn't exist
-				dispatch({ error: 'User does not exist' })
+				// Display username/email doesn't exist
+				dispatch({ error: 'Username or password is incorrect' })
 			} else {
 				console.log({ err })
-				dispatch({ error: err.message })
+				dispatch({ error: err.message || err })
 			}
 		}
 	}
@@ -50,50 +49,103 @@ export default _ => {
 			dispatch({ type: CONFIRM_SIGNUP, user })
 		} catch (err) {
 			console.log({ err })
-			dispatch({ type: SIGNUP, error: err.message })
+			if (err.code === 'UsernameExistsException') {
+				dispatch({ error: 'User already exists' })
+			} else {
+				dispatch({ type: SIGNUP, error: err.message || err })
+			}
 		}
 	}
 	// Confirm User Sign Up
 	const confirmSignUp = async (username, code) => {
 		try {
-			const data = await Auth.confirmSignUp(username, code)
-			// TODO: or use checkUser instead
-			console.log({ data }) // { data: 'SUCCESS'}
-			dispatch({ type: SIGNIN, msg: 'Success! Please sign in' })
+			await Auth.confirmSignUp(username, code)
+			// Redirect to sign in
+			dispatch({
+				type: SIGNIN,
+				user: { username },
+				msg: 'Your account has been confirmed',
+			})
 		} catch (err) {
 			console.log({ err })
-			dispatch({ error: err.message })
+			if (err.code === 'ExpiredCodeException') {
+				// Invalid code provided, request code again
+				dispatch({ error: 'Code has expired. Resend' })
+			} else if (err.code === 'CodeMismatchException') {
+				dispatch({ error: 'Code is invalid. Retry' })
+			} else {
+				dispatch({ error: err.message || err })
+			}
 		}
 	}
 	// Resend User Sign Up code
 	const resendSignUp = async (username, withAlert = true) => {
 		try {
 			const data = await Auth.resendSignUp(username)
-			console.log({ data })
+			console.log({ data }) // CodeDeliveryDetails
 			dispatch({
 				type: CONFIRM_SIGNUP,
 				user: { username },
 				msg: withAlert ? 'Code sent!' : null,
 			})
-			// return true
 		} catch (err) {
 			console.log({ err })
 			dispatch({
 				type: CONFIRM_SIGNUP,
 				user: { username },
-				error: err.message,
+				error: err.message || err,
 			})
+		}
+	}
+	// User Forgot Password
+	const forgotPassword = async (username, withAlert = false) => {
+		try {
+			const data = await Auth.forgotPassword(username)
+			console.log({ data }) // CodeDeliveryDetails
+			dispatch({
+				type: RESET_PASSWORD,
+				user: { username },
+				msg: withAlert ? 'Code sent!' : null,
+			})
+		} catch (err) {
+			console.log({ err })
+			if (err.code === 'InvalidParameterException') {
+				// No registered/verified email or phone_number
+				dispatch({ error: 'Email address is not registered' })
+			} else {
+				dispatch({ error: err.message || err })
+			}
+		}
+	}
+	// User Reset Passord
+	const resetPassword = async (username, code, new_password) => {
+		try {
+			await Auth.forgotPasswordSubmit(username, code, new_password)
+			dispatch({
+				type: SIGNIN,
+				user: { username },
+				msg: 'Your password has been reset',
+			})
+		} catch (err) {
+			console.log({ err })
+			if (err.code === 'ExpiredCodeException') {
+				// Invalid code provided, request code again
+				dispatch({ error: 'Code has expired. Resend' })
+			} else if (err.code === 'CodeMismatchException') {
+				dispatch({ error: 'Code is invalid. Retry' })
+			} else {
+				dispatch({ error: err.message || err })
+			}
 		}
 	}
 	// User Sign Out
 	const signOut = async _ => {
 		try {
-			const data = await Auth.signOut()
-			console.log({ data })
+			await Auth.signOut()
 			dispatch({ type: SIGNIN })
 		} catch (err) {
 			console.log({ err })
-			dispatch({ error: err.message })
+			dispatch({ error: err.message || err })
 		}
 	}
 
@@ -101,12 +153,15 @@ export default _ => {
 		user,
 		authState,
 		error,
+		msg,
 		isAuth: authState === SIGNEDIN,
 		dispatch,
 		signIn,
 		signUp,
 		confirmSignUp,
 		resendSignUp,
+		forgotPassword,
+		resetPassword,
 		signOut,
 	}
 }
