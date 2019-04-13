@@ -25,7 +25,7 @@ const Input = ({
 			)}
 			<InputBase
 				id={name}
-				class={inputClass}
+				className={inputClass}
 				type={type}
 				name={name}
 				value={value}
