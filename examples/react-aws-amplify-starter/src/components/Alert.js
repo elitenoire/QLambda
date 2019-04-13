@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { useTransition, animated, config } from 'react-spring'
-import Icon from 'react-eva-icons'
+import { XCircle } from 'styled-icons/boxicons-regular/XCircle'
 
 import styled from 'styled-components'
 
@@ -13,7 +13,14 @@ const AlertBase = styled(animated.div)`
 const IconBase = styled.span`
 	cursor: pointer;
 `
-const Alert = ({ text, color, onClose, autoClose = true, time = 8000 }) => {
+const Alert = ({
+	text,
+	color,
+	dispatch,
+	onClose,
+	autoClose = true,
+	time = 8000,
+}) => {
 	const display = useTransition(text, null, {
 		from: { bottom: -100, opacity: 0 },
 		enter: { bottom: 0, opacity: 1 },
@@ -31,28 +38,36 @@ const Alert = ({ text, color, onClose, autoClose = true, time = 8000 }) => {
 	}, [text, autoClose])
 	// Hide on Click
 	const onHide = () => {
-		onClose()
+		// Memoization works well with dispatch. onClose callback from Parent
+		// should be wrapped with the useCallback hook so React.memo doesn't
+		// consider it as a new prop
+		// https://dev.to/changoman/react-optimizations-with-reactmemo-usecallback-and-usereducer-42ni
+		if (typeof onClose === 'function') return onClose()
+		if (typeof dispatch === 'function')
+			return dispatch({ error: null, msg: null })
 	}
-
 	return display.map(
-		({ item, props }) =>
+		({ item, key, props }) =>
 			item && (
 				<AlertBase
 					className={`notification m-0 w-100 display-flex justify-content-space-between ${color ||
 						'orange'} shape-no-radius`}
 					style={props}
+					key={key}
 				>
 					<p class="m-0">{text}</p>
 					<IconBase onClick={onHide}>
-						<Icon
-							name="close-circle-outline"
-							size="large"
-							fill={color && color.search('filled') > -1 ? 'white' : 'black'}
+						<XCircle
+							size={20}
+							color={color && color.search('filled') > -1 ? 'white' : 'black'}
 						/>
 					</IconBase>
 				</AlertBase>
 			)
 	)
 }
-
-export default Alert
+// Memoized version to prevent unnecessary renders
+// Note: Memoization is not needed as Alert only renders to the DOM
+// when ever there is an item/text. It only runs the function which will have
+// a negligible cost.
+export default React.memo(Alert)
