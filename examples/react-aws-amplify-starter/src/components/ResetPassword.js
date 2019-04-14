@@ -46,6 +46,7 @@ const ResetPassword = () => {
 	return (
 		<AuthCard
 			animationData={bot}
+			animationSize={'60%'}
 			extraData={lock}
 			error={error}
 			msg={msg}

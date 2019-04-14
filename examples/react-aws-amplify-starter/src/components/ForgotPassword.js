@@ -45,6 +45,7 @@ const ForgotPassword = () => {
 			>
 				<Input
 					label="Email Address"
+					id="email-reset"
 					name="email"
 					placeholder="example@mail.com"
 					type="email"

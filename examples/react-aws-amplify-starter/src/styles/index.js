@@ -1,4 +1,4 @@
-import { ButtonBase, InputBase, CodeInputBase } from './form'
+import { ButtonBase, InputBase, CodeInputBase, Spinner, TextLink } from './form'
 import { Background, Base, Layer } from './components/CommonStyles'
 import * as AppProfileStyles from './components/AppProfileStyles'
 import * as AuthCardStyles from './components/AuthCardStyles'
@@ -9,6 +9,8 @@ export {
 	ButtonBase,
 	InputBase,
 	CodeInputBase,
+	Spinner,
+	TextLink,
 	AppProfileStyles,
 	LoginSignupStyles,
 	AuthCardStyles,

@@ -1,6 +1,6 @@
 import styled, { keyframes, css } from 'styled-components'
 
-// Button
+// Animations
 const pulse = keyframes`
 {
     0% { box-shadow: 0 0 15px rgba(252,195,88, 0.7), 0 0 25px rgba(252,195,88, 0.7); }
@@ -8,6 +8,13 @@ const pulse = keyframes`
     100% { box-shadow: 0 0 0 15px rgba(252,195,88, 0.2), 0 0 0 35px rgba(252,195,88, 0.2); }
 }
 `
+const spin = keyframes`
+{
+	from { transform: rotate(0); }
+	to { transform: rotate(360deg); }
+}
+`
+// Button
 export const ButtonBase = styled.button`
 	background: linear-gradient(270deg, #f46b45, #fcc358);
 	box-shadow: 5px 20px 30px 0 rgba(0, 0, 0, 0.1);
@@ -92,4 +99,19 @@ export const CodeInputBase = styled.div`
 			font-size: 2em;
 		}
 	}
+`
+export const TextLink = styled.p`
+	cursor: pointer;
+	font-weight: 500;
+	margin: 0 0.5em;
+	&.text-underline {
+		text-decoration: underline;
+	}
+	&.normal {
+		font-weight: 400;
+	}
+`
+
+export const Spinner = styled.span`
+	animation: ${spin} 1s linear infinite;
 `

@@ -1,5 +1,5 @@
 import React from 'react'
-import { AuthCardFormStyles as Base } from '../styles'
+import { AuthCardFormStyles as Base, TextLink } from '../styles'
 import { ArrowBack } from 'styled-icons/boxicons-regular/ArrowBack'
 import { Button } from '../form'
 
@@ -24,12 +24,12 @@ const AuthCardForm = props => {
 				{children}
 				<div class="display-flex align-items-middle justify-content-space-around pv-2">
 					{subaction.text && (
-						<p
-							class="m-0 text-orange bold hover-grow text-clickable"
+						<TextLink
+							className="m-0 text-orange bold hover-grow"
 							onClick={subaction.act}
 						>
 							{subaction.text}
-						</p>
+						</TextLink>
 					)}
 					<div class="form-action">
 						<Button
@@ -43,15 +43,15 @@ const AuthCardForm = props => {
 					</div>
 				</div>
 				<div class="display-flex justify-content-center mt-4 footer">
-					<p
-						class="display-flex align-items-middle justify-content-center text-hover-orange text-clickable"
+					<TextLink
+						className="display-flex align-items-middle justify-content-center normal text-hover-orange text-underline"
 						onClick={back.act}
 					>
 						<span class="display-flex mr-1">
 							<ArrowBack size={20} />
 						</span>
 						{back.text}
-					</p>
+					</TextLink>
 				</div>
 			</form>
 		</Base>

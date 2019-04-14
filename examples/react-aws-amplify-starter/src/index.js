@@ -1,5 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
+import { BrowserRouter as Router } from 'react-router-dom'
 import Amplify from 'aws-amplify'
 import 'boba/dist/boba-extended.min.css'
 import { Authenticator, DisplayMode } from './context'
@@ -14,7 +15,9 @@ window.LOG_LEVEL = 'DEBUG'
 ReactDOM.render(
 	<DisplayMode>
 		<Authenticator>
-			<App />
+			<Router>
+				<App />
+			</Router>
 		</Authenticator>
 	</DisplayMode>,
 	document.getElementById('root')

@@ -9,6 +9,7 @@ const { Card, Anime } = AuthCardStyles
 const AuthCard = ({
 	children,
 	animationData,
+	animationSize,
 	extraData,
 	extraSize,
 	error,
@@ -24,7 +25,7 @@ const AuthCard = ({
 					<Card className="bg-white pv-4 soft-shadow-hover-1">
 						<div class="row gapless row-align-center">
 							<div class={`col xs-12${isPortrait ? '' : ' lg-5 xl-5'}`}>
-								<Anime class="p-2">
+								<Anime class="p-2" size={animationSize}>
 									<Lottie
 										animationData={animationData}
 										extra={extraData}

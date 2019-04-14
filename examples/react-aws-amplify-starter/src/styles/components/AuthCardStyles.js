@@ -13,7 +13,7 @@ export const Card = styled.div`
 `
 export const Anime = styled.div`
 	margin: 0 auto;
-	width: 50%;
+	width: ${prop => prop.size || '50%'};
 	@media (max-width: 991px) {
 		width: 25%;
 	}

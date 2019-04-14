@@ -14,9 +14,6 @@ export default styled.div`
 	.form-action {
 		width: 50%;
 	}
-	.text-clickable {
-		cursor: pointer;
-	}
 	@media (min-width: 768px) and (max-width: 991px), (orientation: portrait) {
 		margin: 2em 3em;
 		h4 {

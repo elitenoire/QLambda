@@ -6,6 +6,7 @@ const Input = ({
 	label,
 	value,
 	placeholder,
+	id,
 	name,
 	labelClass,
 	inputClass,
@@ -18,13 +19,13 @@ const Input = ({
 			{hasLabel && (
 				<label
 					class={`input-label${error ? ' text-red' : ''} ${labelClass || ''}`}
-					for={name}
+					for={id || name}
 				>
 					{label}
 				</label>
 			)}
 			<InputBase
-				id={name}
+				id={id || name}
 				className={inputClass}
 				type={type}
 				name={name}

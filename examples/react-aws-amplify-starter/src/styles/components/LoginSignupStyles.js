@@ -27,11 +27,6 @@ export default styled(Base)`
 	.form-action {
 		width: 55%;
 	}
-	.text-link {
-		font-weight: 500;
-		margin: 0 0.5em;
-		cursor: pointer;
-	}
 	@media (max-width: 991px), (orientation: portrait) {
 		.card {
 			box-shadow: 5px 20px 30px 0 rgba(0, 0, 0, 0.1);

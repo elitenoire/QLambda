@@ -2,7 +2,7 @@ import React from 'react'
 import { useTransition, animated, config } from 'react-spring'
 import { Input, Button } from '../form'
 import Alert from './Alert'
-import { Layer, LoginSignupStyles as Sheet } from '../styles'
+import { Layer, LoginSignupStyles as Sheet, TextLink } from '../styles'
 import { useForm, useAuth } from '../hooks'
 import { SIGNUP, SIGNIN, FORGOT_PASSWORD } from '../utils/constants'
 
@@ -59,13 +59,9 @@ const LoginSignup = ({ isPortrait }) => {
 		leave: {
 			opacity: 1,
 		},
-		config: config.wobbly,
+		config: config.slow,
 	})
-	// Only render this component for Signup / Signin
-	if (!showSignUp && authState !== SIGNIN) {
-		// TODO: show an error component
-		return null
-	}
+
 	return (
 		<Sheet
 			isPortrait={isPortrait}
@@ -130,12 +126,12 @@ const LoginSignup = ({ isPortrait }) => {
 						</div>
 						<div class="display-flex align-items-middle justify-content-space-around pv-2">
 							{!showSignUp && (
-								<p
-									class=" m-0 hover-grow text-link text-orange"
+								<TextLink
+									className=" m-0 hover-grow text-orange"
 									onClick={_ => dispatch({ type: FORGOT_PASSWORD })}
 								>
 									Forgot Password?
-								</p>
+								</TextLink>
 							)}
 							<div class="form-action">
 								<Button
@@ -152,16 +148,16 @@ const LoginSignup = ({ isPortrait }) => {
 						{showSignUp ? (
 							<>
 								Already have an account?
-								<span class="text-link text-orange" onClick={swapForm}>
+								<TextLink as="span" className="text-orange" onClick={swapForm}>
 									Sign in
-								</span>
+								</TextLink>
 							</>
 						) : (
 							<>
 								No account yet?
-								<span class="text-link text-orange" onClick={swapForm}>
+								<TextLink as="span" className="text-orange" onClick={swapForm}>
 									Sign up
-								</span>
+								</TextLink>
 							</>
 						)}
 					</p>

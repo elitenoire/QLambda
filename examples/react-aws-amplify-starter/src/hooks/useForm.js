@@ -40,8 +40,9 @@ const useForm = (initialValues, callback, isValidate = true) => {
 		if (e) e.preventDefault()
 		setIsSubmitting(true)
 		if (isValidate) {
-			setErrors(validate(values))
+			return setErrors(validate(values))
 		}
+		return setErrors({})
 	}
 	// Input Change
 	const handleChange = e => {
