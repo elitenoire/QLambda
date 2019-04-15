@@ -14,6 +14,13 @@ const spin = keyframes`
 	to { transform: rotate(360deg); }
 }
 `
+const ellipsis = keyframes`
+{
+	to {
+		width: 1.25em
+	}
+}
+`
 // Button
 export const ButtonBase = styled.button`
 	background: linear-gradient(270deg, #f46b45, #fcc358);
@@ -109,6 +116,18 @@ export const TextLink = styled.p`
 	}
 	&.normal {
 		font-weight: 400;
+	}
+	&.loading {
+		pointer-events: none;
+		width: 7em;
+	}
+	&.loading::after {
+		overflow: hidden;
+		display: inline-block;
+		vertical-align: bottom;
+		width: 0px;
+		content: '...';
+		animation: ${ellipsis} steps(4, end) 900ms infinite;
 	}
 `
 

@@ -12,13 +12,18 @@ const ConfirmSignup = () => {
 	const { user, error, msg, confirmSignUp, resendSignUp, dispatch } = useAuth()
 	// Code to confirm user sign up
 	const [code, setCode] = useState('')
+	// Resending code status
+	const [isResending, setIsResending] = useState(false)
 	// Confirm user sign up
 	const confirm = async e => await confirmSignUp(user.username, code)
 	// Form attributes
 	const { isSubmitting, handleSubmit } = useForm({}, confirm, false)
 	// Resend code
-	// TODO: show a badge on success
-	const resendCode = async e => await resendSignUp(user.username)
+	const resendCode = async e => {
+		setIsResending(true)
+		await resendSignUp(user.username)
+		setIsResending(false)
+	}
 	// Retrieve code from user input
 	const onComplete = value => {
 		if (value !== code) {
@@ -36,7 +41,11 @@ const ConfirmSignup = () => {
 				title="Confirm Account"
 				subtitle="Please enter the code sent to your email below"
 				action={{ text: 'Confirm', act: handleSubmit }}
-				subaction={{ text: 'Resend Code', act: resendCode }}
+				subaction={{
+					text: 'Resend Code',
+					act: resendCode,
+					loading: isResending,
+				}}
 				back={{ text: 'Back to sign up', act: back }}
 			>
 				{user.username && (

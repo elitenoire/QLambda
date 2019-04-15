@@ -24,11 +24,17 @@ const ResetPassword = () => {
 	} = useAuth()
 	// Code to reset password
 	const [code, setCode] = useState('')
+	// Resending code status
+	const [isResending, setIsResending] = useState(false)
 	// Reset password
 	const resetPwd = async e =>
 		await resetPassword(user.username, code, values.password)
 	// Resend code to reset password
-	const resendCode = async e => await forgotPassword(user.username, true)
+	const resendCode = async e => {
+		setIsResending(true)
+		await forgotPassword(user.username, true)
+		setIsResending(false)
+	}
 	// Form attributes
 	const { values, errors, isSubmitting, handleChange, handleSubmit } = useForm(
 		initialValues,
@@ -58,7 +64,11 @@ const ResetPassword = () => {
 				title="Reset Password"
 				subtitle="Please enter the code sent to your email below and the new password"
 				action={{ text: 'Reset', act: handleSubmit }}
-				subaction={{ text: 'Resend Code', act: resendCode }}
+				subaction={{
+					text: 'Resend Code',
+					act: resendCode,
+					loading: isResending,
+				}}
 				back={{ text: 'Back to Sign In', act: back }}
 			>
 				<div class="radio small orange">

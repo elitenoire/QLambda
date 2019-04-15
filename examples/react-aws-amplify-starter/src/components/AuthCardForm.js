@@ -25,7 +25,9 @@ const AuthCardForm = props => {
 				<div class="display-flex align-items-middle justify-content-space-around pv-2">
 					{subaction.text && (
 						<TextLink
-							className="m-0 text-orange bold hover-grow"
+							className={`m-0 text-orange hover-grow${
+								subaction.loading ? ' loading' : ''
+							}`}
 							onClick={subaction.act}
 						>
 							{subaction.text}
@@ -36,7 +38,7 @@ const AuthCardForm = props => {
 							className="border-none rounded medium w-100"
 							type="submit"
 							disabled={disabled}
-							loading={loading}
+							loading={loading || action.loading}
 						>
 							{action.text}
 						</Button>
