@@ -10,7 +10,9 @@ import * as serviceWorker from './serviceWorker'
 
 Amplify.configure(config)
 // Log AWS amplify
-window.LOG_LEVEL = 'DEBUG'
+if (process.env.NODE_ENV === 'development') {
+	window.LOG_LEVEL = 'DEBUG'
+}
 
 ReactDOM.render(
 	<DisplayMode>

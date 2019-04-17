@@ -154,7 +154,6 @@ export default _ => {
 		authState,
 		error,
 		msg,
-		isAuth: authState === SIGNEDIN,
 		dispatch,
 		signIn,
 		signUp,

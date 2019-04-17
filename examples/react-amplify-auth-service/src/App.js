@@ -3,7 +3,6 @@ import { Switch, Route, withRouter } from 'react-router-dom'
 import { useTransition, animated } from 'react-spring'
 import { AuthContext } from './context/Authenticator'
 import Start from './screens/Start'
-// import { withAuthenticator } from "aws-amplify-react";
 import { useAuth } from './hooks'
 
 const App = ({ location }) => {
@@ -52,5 +51,4 @@ const App = ({ location }) => {
 	)
 }
 
-// export default withAuthenticator(App, { includeGreetings: true });
 export default withRouter(App)

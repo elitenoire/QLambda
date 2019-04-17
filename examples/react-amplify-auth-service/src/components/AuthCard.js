@@ -1,8 +1,8 @@
 import React, { useContext } from 'react'
 import { Base, Layer, AuthCardStyles } from '../styles'
 import { DisplayContext } from '../context/DisplayMode'
-import Lottie from '../components/Lottie'
-import Alert from '../components/Alert'
+import Lottie from './Lottie'
+import Alert from './Alert'
 
 const { Card, Anime } = AuthCardStyles
 

@@ -29,7 +29,8 @@ const authReducer = (state, { type, user = {}, error = null, msg = null }) => {
 const Authenticator = ({ children }) => {
 	// State Reducer
 	const [state, dispatch] = useReducer(authReducer, initialState)
-
+	// Authentication status
+	const isAuth = state.authState === SIGNEDIN
 	// Check for authenticated user
 	const checkUser = async _ => {
 		console.log('Checking if user is authenticated')
@@ -49,7 +50,7 @@ const Authenticator = ({ children }) => {
 	}, [])
 
 	return (
-		<AuthContext.Provider value={{ state, dispatch, checkUser }}>
+		<AuthContext.Provider value={{ state, dispatch, checkUser, isAuth }}>
 			{children}
 		</AuthContext.Provider>
 	)

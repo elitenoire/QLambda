@@ -1,6 +1,6 @@
 import React from 'react'
-import AuthCard from '../components/AuthCard'
-import AuthCardForm from '../components/AuthCardForm'
+import AuthCard from './AuthCard'
+import AuthCardForm from './AuthCardForm'
 import { Input } from '../form'
 import { useAuth, useForm } from '../hooks'
 import { SIGNIN } from '../utils/constants'

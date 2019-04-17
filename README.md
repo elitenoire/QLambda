@@ -13,7 +13,7 @@
 
 _Quick View:_
 
-[01][1]&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+[00][0]&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
 
 </div>
 
@@ -31,9 +31,9 @@ A summary of the examples found in this project.
 TODO: Add demo links
 -->
 
-| Name                               | Tech                                              | Description                                                                                                                           |
-| ---------------------------------- | ------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
-| 01. [React AWS Amplify Starter][1] | Amplify CLI, Cognito, AppSync, Lambda, Amazon S3. | Basic React app that authorizes users, interact with a GraphQL api, Lambda text translation, store image in S3 and deploy app to AWS. |
+| Name                                | Tech                 | Description                                                   |
+| ----------------------------------- | -------------------- | ------------------------------------------------------------- |
+| 00. [React Amplify Auth Service][0] | Amplify CLI, Cognito | Simple authentication in React using AWS Amplify and Cognito. |
 
 ### How To Use
 
@@ -47,14 +47,24 @@ $ git clone https://github.com/elitenoire/QLambda.git
 $ cd QLambda
 
 # Install dependencies
-$ yarn install
+$ yarn install -g @aws-amplify/cli
+$ cd examples/~insert~example~name && yarn install
+
+# Configure Amplify
+$ amplify init
+
+# Add Amplify Auth
+$ amplify add auth
+  <accept defaults>
+  ...
+$ amplify push
 
 # Run the app
-$
+$ yarn start
 ```
 
 #### Credits
 
 - Logo design by [Logofury](https://www.logofury.com/)
 
-[1]: /examples/react-aws-amplify-starter "Basic serverless react app"
+[0]: /examples/react-amplify-auth-service 'React Cognito Authentication'

@@ -14,12 +14,12 @@ const AppProfile = ({ isPortrait, setShowAuth }) => {
 					<RobotSvg width="100%" height="100%" />
 				</Image>
 				<div class="pt-4 pr-3 pb-2 pl-3">
-					<h3 class="subheader bold uppercase">React Auth Starter</h3>
+					<h3 class="subheader bold uppercase">React Amplify Auth</h3>
 					<p class="content">A custom authentication flow using AWS Amplify</p>
 					<div class="label-group">
+						<Pill className="label rounded medium mb-2">AWS</Pill>
+						<Pill className="label rounded medium mb-2">Amplify</Pill>
 						<Pill className="label rounded medium mb-2">Cognito</Pill>
-						<Pill className="label rounded medium mb-2">AppSync</Pill>
-						<Pill className="label rounded medium mb-2">Lambda</Pill>
 					</div>
 				</div>
 				<Button

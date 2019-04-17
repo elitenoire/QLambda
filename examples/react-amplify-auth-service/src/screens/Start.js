@@ -6,7 +6,7 @@ import LoginSignup from '../components/LoginSignup'
 import ConfirmSignup from '../components/ConfirmSignup'
 import ForgotPassword from '../components/ForgotPassword'
 import ResetPassword from '../components/ResetPassword'
-import { DisplayContext, AuthContext } from '../context/'
+import { DisplayContext, AuthContext } from '../context'
 import {
 	CONFIRM_SIGNUP,
 	FORGOT_PASSWORD,
