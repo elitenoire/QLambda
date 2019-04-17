@@ -7,20 +7,20 @@ Deployment via the AWS Amplify console.
 
 ### Features
 
-[x] Sign up a new user
-[x] Confirm sign up
-[x] Sign in a confirmed user
-[x] Redirect an unconfirmed user
-[x] Resend confirmation code
-[x] Forgot password
-[x] Reset password
-[x] Sign out a user
-[] Change password
-[] Protected routes
-[] Redirects for unauthorized users
-[] Cognito Social sign in
-[] Time based One Time Password (TOTP)
-[] 2 Factor Authentication
+- [x] Sign up a new user
+- [x] Confirm sign up
+- [x] Sign in a confirmed user
+- [x] Redirect an unconfirmed user
+- [x] Resend confirmation code
+- [x] Forgot password
+- [x] Reset password
+- [x] Sign out a user
+- [ ] Change password
+- [ ] Protected routes
+- [ ] Redirects for unauthorized users
+- [ ] Cognito Social sign in
+- [ ] Time based One Time Password (TOTP)
+- [ ] 2 Factor Authentication
 
 #### Resources
 
