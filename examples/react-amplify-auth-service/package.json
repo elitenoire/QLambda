@@ -1,34 +1,34 @@
 {
-  "name": "react-aws-amplify-starter",
-  "version": "0.1.0",
-  "private": true,
-  "dependencies": {
-    "aws-amplify": "^1.1.26",
-    "boba": "^1.7.1",
-    "react": "^16.8.4",
-    "react-dom": "^16.8.4",
-    "react-lottie": "^1.2.3",
-    "react-router-dom": "^5.0.0",
-    "react-scripts": "2.1.8",
-    "react-spring": "^8.0.18",
-    "react-verification-input": "^0.1.5",
-    "styled-components": "^4.2.0",
-    "styled-icons": "^7.9.0",
-    "use-media": "^1.3.0"
-  },
-  "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
-  },
-  "eslintConfig": {
-    "extends": "react-app"
-  },
-  "browserslist": [
-    ">0.2%",
-    "not dead",
-    "not ie <= 11",
-    "not op_mini all"
-  ]
+	"name": "react-amplify-auth-service",
+	"version": "0.1.0",
+	"private": true,
+	"dependencies": {
+		"aws-amplify": "^1.1.26",
+		"boba": "^1.7.1",
+		"react": "^16.8.4",
+		"react-dom": "^16.8.4",
+		"react-lottie": "^1.2.3",
+		"react-router-dom": "^5.0.0",
+		"react-scripts": "2.1.8",
+		"react-spring": "^8.0.18",
+		"react-verification-input": "^0.1.5",
+		"styled-components": "^4.2.0",
+		"styled-icons": "^7.9.0",
+		"use-media": "^1.3.0"
+	},
+	"scripts": {
+		"start": "react-scripts start",
+		"build": "react-scripts build",
+		"test": "react-scripts test",
+		"eject": "react-scripts eject"
+	},
+	"eslintConfig": {
+		"extends": "react-app"
+	},
+	"browserslist": [
+		">0.2%",
+		"not dead",
+		"not ie <= 11",
+		"not op_mini all"
+	]
 }
