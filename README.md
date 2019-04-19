@@ -71,10 +71,11 @@ $ yarn workspace ~insert~example~name start
 
 The console does not auto-detect the build settings due to the project structure. Hence `amplify.yml` is included in the root directory to expose the settings. Each example app is to be deployed separately. Four steps needed to deploy:
 
+[![amplifybutton](https://oneclick.amplifyapp.com/button.svg)][deployrepo]
+
 - Click the button and follow the prompts to save and deploy app
-  [![amplifybutton](https://oneclick.amplifyapp.com/button.svg)][deployrepo]
-- The build fails because it is missing an env variable which needs to be set in the console as `APP_NAME = ~insert~example~name` . [Read more][consoleenv]
-- Follow this [link][consolerole] to enable Amplify Console deploy the backend resource. (_This fixes the missing AWS credentials error during build_)
+- Follow this [link][consolerole] to enable Amplify Console deploy the backend resource. (_This fixes the AWS access credentials can not be found error during build_)
+- The build also fails because it is missing an env variable which needs to be set in the console as `APP_NAME = ~insert~example~name` . [Read more][consoleenv]
 - Retry the build process again
 
 The [Amplify Console User Guide](https://docs.aws.amazon.com/amplify/latest/userguide/welcome.html) provides detailed information on deploying apps.
