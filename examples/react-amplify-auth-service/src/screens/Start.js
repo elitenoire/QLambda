@@ -93,7 +93,6 @@ const Start = () => {
 				)
 		}
 	}
-	console.log({ transitions })
 	return transitions.map(({ item, props, key }) => (
 		<animated.div
 			key={key}

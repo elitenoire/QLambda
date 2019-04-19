@@ -109,7 +109,10 @@ export default _ => {
 			})
 		} catch (err) {
 			console.log({ err })
-			if (err.code === 'InvalidParameterException') {
+			if (
+				err.code === 'InvalidParameterException' ||
+				err.code === 'UserNotFoundException'
+			) {
 				// No registered/verified email or phone_number
 				dispatch({ error: 'Email address is not registered' })
 			} else {

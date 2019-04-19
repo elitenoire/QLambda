@@ -3,7 +3,9 @@
 > This is part of the QLambda project - _A learning series dedicated to AWS Serverless_.
 
 A React authentication solution based on AWS Amplify and AWS Cognito.
+
 Deployment via the AWS Amplify console.
+[Demo](https://master.d3gdsyrswsj5yq.amplifyapp.com/)
 
 ### Features
 

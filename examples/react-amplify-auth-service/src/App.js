@@ -5,6 +5,9 @@ import { AuthContext } from './context/Authenticator'
 import Start from './screens/Start'
 import { useAuth } from './hooks'
 
+import { Base, Layer, Background } from './styles'
+import { Button } from './form'
+
 const App = ({ location }) => {
 	const { state } = useContext(AuthContext)
 	const { signOut } = useAuth()
@@ -26,12 +29,23 @@ const App = ({ location }) => {
 	})
 	// Loading screen while checking auth status
 	if (!state.authState) return <h1>LOADING...</h1>
-	// Temporary sign out hack
+	// Temporary Welcome Page until protected route is implemented
 	if (state.authState === 'SIGNEDIN') {
-		console.log('Signing out...')
-		// Call async function in useEffect - but too lazy
-		// Hence react warns
-		return signOut()
+		return (
+			<Background>
+				<Base>
+					<Layer className="text-center">
+						<h1>WELCOME</h1>
+						<Button
+							className="large rounded border-none mt-4"
+							onClick={signOut}
+						>
+							Sign Out
+						</Button>
+					</Layer>
+				</Base>
+			</Background>
+		)
 	}
 
 	return (

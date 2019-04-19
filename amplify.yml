@@ -1,0 +1,31 @@
+version: 0.1
+backend:
+  phases:
+    preBuild:
+      commands:
+        - cd examples/${APP_NAME}
+    build:
+      commands:
+        - '# Execute Amplify CLI with the helper script'
+        - amplifyPush --simple --environment prod
+frontend:
+  phases:
+    preBuild:
+      commands:
+        - yarn install
+    # IMPORTANT - Please verify your build commands
+    build:
+      commands:
+        - yarn run build
+        - cd ../..
+    postBuild:
+      commands:
+        - mv ./examples/${APP_NAME}/build ./build
+  artifacts:
+    # IMPORTANT - Please verify your build output directory
+    baseDirectory: build
+    files:
+      - '**/*'
+  cache:
+    paths:
+      - node_modules/**/*
